@@ -6,6 +6,7 @@ import axios from "axios";
 dotenv.config();
 
 const bot_token = process.env.TELEGRAM_BOT_TOKEN;
+const api_url = process.env.API_URL;
 
 const allowCors = (fn) => async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
@@ -36,19 +37,27 @@ const prepare_message = (notification) => {
     We will contact you shortly.`;
   }
 
-  const { allocated_to, owner, reference_type, description } = notification;
+  const { allocated_to, owner, reference_type, reference_name, description } =
+    notification;
+
+  const formattedReferenceType = reference_type
+    .toLowerCase()
+    .replace(/ /g, "_");
+
+  const documentLink = `${api_url}/app/${formattedReferenceType}/${reference_name}`;
 
   let msg = `
-<b>New Notification Arrived! <tg-emoji emoji-id="5368324170671202286">🔔</tg-emoji></b>
-
-Notification Details:
-- <strong>Allocated To</strong>: ${allocated_to}
-- <strong>Owner</strong>: ${owner}
-- <strong>Reference Type</strong>: ${reference_type}
-- <strong>Description</strong>: ${description}
-
-Tibeb Design & Build ERP
-`;
+  <b>New Notification Arrived! <tg-emoji emoji-id="5368324170671202286">🔔</tg-emoji></b>
+  
+  Notification Details:
+  - <strong>Allocated by</strong>: ${owner}
+  - <strong>Reference Type</strong>: ${reference_type}
+  - <strong>Description</strong>: ${description}
+  
+  View Document: <a href="${documentLink}">Click here to view</a>
+  
+  Tibeb Design & Build ERP
+  `;
 
   return msg;
 };
