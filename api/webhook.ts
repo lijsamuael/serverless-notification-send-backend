@@ -33,8 +33,11 @@ const prepare_message = (notification) => {
     !notification.reference_type ||
     !notification.description
   ) {
-    return `<b>Thank you! <tg-emoji emoji-id="5368324170671202286">👍</tg-emoji></b>
-    We will contact you shortly.`;
+    return {
+      msg: `<b>Thank you! <tg-emoji emoji-id="5368324170671202286">👍</tg-emoji></b>
+      We will contact you shortly.`,
+      documentLink: null, // Or an empty string if preferable
+    };
   }
 
   const { allocated_to, owner, reference_type, reference_name, description } =
@@ -54,12 +57,11 @@ const prepare_message = (notification) => {
   - <strong>Reference Type</strong>: ${reference_type}
   - <strong>Description</strong>: ${description}
   
-  View Document: <a href="${documentLink}">Click here to view</a>
   
   Tibeb Design & Build ERP
   `;
 
-  return msg;
+  return { msg, documentLink };
 };
 
 const fetchTelegramId = async (email) => {
@@ -97,18 +99,18 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
       });
     }
 
-    const text = prepare_message(notification);
+    const { msg, documentLink } = prepare_message(notification);
     const bot = new TelegramBot(bot_token);
 
     // Send the message
-    await bot.sendMessage(telegramId, text, {
+    await bot.sendMessage(telegramId, msg, {
       parse_mode: "HTML",
       reply_markup: {
         inline_keyboard: [
           [
             {
-              text: "View Notification",
-              url: "https://your-notification-url.com",
+              text: "View Attached Document",
+              url: documentLink,
             },
           ],
         ],
