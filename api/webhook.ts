@@ -53,9 +53,9 @@ const prepare_message = (notification) => {
   <b>New Notification Arrived! <tg-emoji emoji-id="5368324170671202286">🔔</tg-emoji></b>
   
   Notification Details:
-  - <strong>Allocated by</strong>: ${owner}
-  - <strong>Reference Type</strong>: ${reference_type}
-  - <strong>Description</strong>: ${description}
+    - <strong>Allocated by</strong>: ${owner}
+    - <strong>Reference Type</strong>: ${reference_type}
+    - <strong>Description</strong>: ${description}
   
   
   Tibeb Design & Build ERP
