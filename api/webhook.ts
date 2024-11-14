@@ -45,7 +45,7 @@ const prepare_message = (notification) => {
 
   const formattedReferenceType = reference_type
     .toLowerCase()
-    .replace(/ /g, "_");
+    .replace(/ /g, "-");
 
   const documentLink = `${api_url}/app/${formattedReferenceType}/${reference_name}`;
 
