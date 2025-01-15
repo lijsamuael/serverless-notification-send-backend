@@ -75,7 +75,7 @@ const fetchTelegramId = async (email) => {
         },
       }
     );
-
+    console.log({response.data.data.telegram_user_id})
     return response.data.data.telegram_user_id;
   } catch (error) {
     console.log("Error fetching Telegram ID:", error.message);
